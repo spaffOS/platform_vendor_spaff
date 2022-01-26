@@ -60,15 +60,15 @@ function setup_vendor() {
         exit 1
     fi
 
-    export HENTAI_ROOT="$3"
-    if [ ! -d "$HENTAI_ROOT" ]; then
-        echo "\$HENTAI_ROOT must be set and valid before including this script!"
+    export SPAFF_ROOT="$3"
+    if [ ! -d "$SPAFF_ROOT" ]; then
+        echo "\$SPAFF_ROOT must be set and valid before including this script!"
         exit 1
     fi
 
     export OUTDIR=vendor/"$VENDOR"/"$DEVICE"
-    if [ ! -d "$HENTAI_ROOT/$OUTDIR" ]; then
-        mkdir -p "$HENTAI_ROOT/$OUTDIR"
+    if [ ! -d "$SPAFF_ROOT/$OUTDIR" ]; then
+        mkdir -p "$SPAFF_ROOT/$OUTDIR"
     fi
 
     VNDNAME="$6"
@@ -76,10 +76,10 @@ function setup_vendor() {
         VNDNAME="$DEVICE"
     fi
 
-    export PRODUCTMK="$HENTAI_ROOT"/"$OUTDIR"/"$VNDNAME"-vendor.mk
-    export ANDROIDBP="$HENTAI_ROOT"/"$OUTDIR"/Android.bp
-    export ANDROIDMK="$HENTAI_ROOT"/"$OUTDIR"/Android.mk
-    export BOARDMK="$HENTAI_ROOT"/"$OUTDIR"/BoardConfigVendor.mk
+    export PRODUCTMK="$SPAFF_ROOT"/"$OUTDIR"/"$VNDNAME"-vendor.mk
+    export ANDROIDBP="$SPAFF_ROOT"/"$OUTDIR"/Android.bp
+    export ANDROIDMK="$SPAFF_ROOT"/"$OUTDIR"/Android.mk
+    export BOARDMK="$SPAFF_ROOT"/"$OUTDIR"/BoardConfigVendor.mk
 
     if [ "$4" == "true" ] || [ "$4" == "1" ]; then
         COMMON=1
@@ -95,8 +95,8 @@ function setup_vendor() {
         VENDOR_RADIO_STATE=0
     fi
 
-    export BINARIES_LOCATION="$HENTAI_ROOT"/prebuilts/extract-tools/${HOST}-x86/bin
-    export JARS_LOCATION="$HENTAI_ROOT"/prebuilts/extract-tools/common/smali
+    export BINARIES_LOCATION="$SPAFF_ROOT"/prebuilts/extract-tools/${HOST}-x86/bin
+    export JARS_LOCATION="$SPAFF_ROOT"/prebuilts/extract-tools/common/smali
 
     for version in 0_8 0_9; do
         export PATCHELF_${version}="$BINARIES_LOCATION"/patchelf-"${version}"
@@ -1466,7 +1466,7 @@ function extract() {
     local FIXUP_HASHLIST=( ${PRODUCT_COPY_FILES_FIXUP_HASHES[@]} ${PRODUCT_PACKAGES_FIXUP_HASHES[@]} )
     local PRODUCT_COPY_FILES_COUNT=${#PRODUCT_COPY_FILES_LIST[@]}
     local COUNT=${#FILELIST[@]}
-    local OUTPUT_ROOT="$HENTAI_ROOT"/"$OUTDIR"/proprietary
+    local OUTPUT_ROOT="$SPAFF_ROOT"/"$OUTDIR"/proprietary
     local OUTPUT_TMP="$TMPDIR"/"$OUTDIR"/proprietary
 
     if [ "$SRC" = "adb" ]; then
@@ -1503,7 +1503,7 @@ function extract() {
                 fi
                 if [ -a "$DUMPDIR"/"$PARTITION".new.dat ]; then
                     echo "Converting "$PARTITION".new.dat to "$PARTITION".img"
-                    python "$HENTAI_ROOT"/vendor/hentai/build/tools/sdat2img.py "$DUMPDIR"/"$PARTITION".transfer.list "$DUMPDIR"/"$PARTITION".new.dat "$DUMPDIR"/"$PARTITION".img 2>&1
+                    python "$SPAFF_ROOT"/vendor/spaff/build/tools/sdat2img.py "$DUMPDIR"/"$PARTITION".transfer.list "$DUMPDIR"/"$PARTITION".new.dat "$DUMPDIR"/"$PARTITION".img 2>&1
                     rm -rf "$DUMPDIR"/"$PARTITION".new.dat "$DUMPDIR"/"$PARTITION"
                     mkdir "$DUMPDIR"/"$PARTITION" "$DUMPDIR"/tmp
                     echo "Requesting sudo access to mount the "$PARTITION".img"
@@ -1681,7 +1681,7 @@ function extract_firmware() {
     local FILELIST=( ${PRODUCT_COPY_FILES_LIST[@]} )
     local COUNT=${#FILELIST[@]}
     local SRC="$2"
-    local OUTPUT_DIR="$HENTAI_ROOT"/"$OUTDIR"/radio
+    local OUTPUT_DIR="$SPAFF_ROOT"/"$OUTDIR"/radio
 
     if [ "$VENDOR_RADIO_STATE" -eq "0" ]; then
         echo "Cleaning firmware output directory ($OUTPUT_DIR).."

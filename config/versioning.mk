@@ -17,20 +17,20 @@
 
 BUILD_ID_LC ?= $(shell echo $(BUILD_ID) | tr '[:upper:]' '[:lower:]')
 
-PLATFORM_HENTAI_RELEASE := SaltyIceCream
+PLATFORM_SPAFF_RELEASE := DevilsMilk
 
 ifeq ($(TARGET_BUILD_VARIANT),user)
-    PLATFORM_HENTAI_VERSION := $(PLATFORM_HENTAI_RELEASE).Furry.$(shell date +%m%d%H%M)
-    PROD_VERSION += $(TARGET_PRODUCT)-$(PLATFORM_HENTAI_RELEASE)-ota-$(BUILD_ID_LC)-Furry.$(shell date +%m%d%H%M)
+    PLATFORM_SPAFF_VERSION := $(PLATFORM_SPAFF_RELEASE).DN.$(shell date +%m%d%H%M)
+    PROD_VERSION += $(TARGET_PRODUCT)-$(PLATFORM_SPAFF_RELEASE)-ota-$(BUILD_ID_LC)-Furry.$(shell date +%m%d%H%M)
 else
-    PLATFORM_HENTAI_VERSION := $(PLATFORM_HENTAI_RELEASE).INT.$(shell date +%m%d%H%M)
-    PROD_VERSION += $(TARGET_PRODUCT)-$(PLATFORM_HENTAI_RELEASE)-ota-$(BUILD_ID_LC)-INT.$(shell date +%m%d%H%M)
+    PLATFORM_SPAFF_VERSION := $(PLATFORM_SPAFF_RELEASE).INT.$(shell date +%m%d%H%M)
+    PROD_VERSION += $(TARGET_PRODUCT)-$(PLATFORM_SPAFF_RELEASE)-ota-$(BUILD_ID_LC)-INT.$(shell date +%m%d%H%M)
 endif
 
 PRODUCT_PRODUCT_PROPERTIES += \
-    ro.system.hentai.version=$(PLATFORM_HENTAI_VERSION)
+    ro.system.spaff.version=$(PLATFORM_SPAFF_VERSION)
 
-$(call inherit-product-if-exists, vendor/hentai/build/target/product/security/hentai_security.mk)
+$(call inherit-product-if-exists, vendor/spaff/build/target/product/security/spaff_security.mk)
 
 PRODUCT_HOST_PACKAGES += \
     sign_target_files_apks \
